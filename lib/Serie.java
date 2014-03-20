@@ -14,28 +14,26 @@ import java.util.List;
  */
 public abstract class Serie {
 
-    private String name;
-    private List<Point> points;
-    private Color color;
+    protected String name;
+    protected List<Point> points;
+    protected float stroke=1;
     protected Paint paint=new Paint();
+    protected PointFigureType pointFigureType;
 
-    public Serie(){}
+    public Serie(){
+        paint.setColor(Color.BLACK);
+        points=new ArrayList<Point>();
+    }
 
-    private void sort(){
+    protected void sort(){
         Collections.sort(points);
     }
 
     public void addPoint(Point p){
-        if(points==null){
-            points=new ArrayList<Point>();
-        }
         points.add(p);
     }
 
     public void addPoints(Collection<? extends Point> otherPoints){
-        if(points==null){
-            points=new ArrayList<Point>();
-        }
         points.addAll(otherPoints);
     }
 
@@ -50,6 +48,26 @@ public abstract class Serie {
     public void finishDrawing(){}
 
     public abstract void drawPoint(Canvas canvas,double x,double y);
+
+    public void setStroke(float stroke){
+        this.stroke=stroke;
+        paint.setStrokeWidth(stroke);
+    }
+
+    public void setColor(int color) {
+        paint.setColor(color);
+    }
+    public void setColor(String c){
+        setColor(Color.parseColor(c));
+    }
+
+    public PointFigureType getPointFigureType() {
+        return pointFigureType;
+    }
+
+    public void setPointFigureType(PointFigureType pointFigureType) {
+        this.pointFigureType = pointFigureType;
+    }
 
     public String getName() {
         return name;
