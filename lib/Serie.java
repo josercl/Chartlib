@@ -16,12 +16,13 @@ public abstract class Serie {
 
     protected String name;
     protected List<Point> points;
-    protected float stroke=1;
+    protected float stroke=5;
     protected Paint paint=new Paint();
     protected PointFigureType pointFigureType;
 
     public Serie(){
-        paint.setColor(Color.BLACK);
+        setColor(Color.BLACK);
+        setStroke(stroke);
         points=new ArrayList<Point>();
     }
 
