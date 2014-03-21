@@ -49,7 +49,7 @@ public class PieSerie extends Serie {
     @Override
     public void draw(Canvas canvas,int width,int height) {
         sort();
-        startAngle=-90;
+        startAngle=0;
 
         diameter=(height>=width)?width:height;
 
@@ -68,12 +68,17 @@ public class PieSerie extends Serie {
             RadialGradient shader=new RadialGradient(bounds.centerX(),bounds.centerY(),diameter/2,gradient[0],gradient[1], Shader.TileMode.CLAMP);
             drawPoint(canvas, points.get(i).getY(), shader);
         }
+
         Paint paint2=new Paint();
         paint2.setStrokeWidth(3);
         paint2.setColor(Color.WHITE);
-        canvas.drawLine(bounds.centerX(),bounds.centerY(),bounds.centerX(),bounds.centerY()-diameter/2,paint2);
+        //canvas.drawLine(bounds.centerX(),bounds.centerY(),bounds.centerX()+diameter/2,bounds.centerY(),paint2);
+        startAngle=0;
         for(int i=0;i<points.size();i++){
-
+            startAngle+=((float) points.get(i).getY())*360/((float) total);
+            double xl=bounds.centerX()+diameter*Math.cos(startAngle * Math.PI/180)/2;
+            double yl=bounds.centerY()+diameter*Math.sin(startAngle * Math.PI/180)/2;
+            canvas.drawLine(bounds.centerX(),bounds.centerY(),(float) xl,(float) yl,paint2);
         }
     }
 
@@ -83,7 +88,6 @@ public class PieSerie extends Serie {
         paint.setDither(true);
 
         canvas.drawArc(bounds, startAngle, angle, true, paint);
-
         startAngle+=angle;
     }
 

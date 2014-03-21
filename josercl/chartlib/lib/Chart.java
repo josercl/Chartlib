@@ -6,8 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 /**
  * Created by eseprin on 3/20/14.
  */
-public class Chart extends View {
+public class Chart extends RelativeLayout{
 
     private boolean showLeftAxis=true,showRightAxis=false,showTopAxis=false,showBottomAxis=true;
     private int leftAxisColor,rightAxisColor,topAxisColor,bottomAxisColor;
@@ -33,17 +32,17 @@ public class Chart extends View {
         super(context, attrs, defStyleAttr);
         series=new ArrayList<Serie>();
 
-        /*TypedArray attributes=context.obtainStyledAttributes(attrs,R.styleable.chartlib);
+        TypedArray attributes=context.obtainStyledAttributes(attrs,R.styleable.chartlib);
 
         showLeftAxis=attributes.getBoolean(R.styleable.chartlib_showLeftAxis,true);
         showRightAxis=attributes.getBoolean(R.styleable.chartlib_showRightAxis,false);
         showBottomAxis=attributes.getBoolean(R.styleable.chartlib_showBottomAxis,true);
         showTopAxis=attributes.getBoolean(R.styleable.chartlib_showTopAxis,false);
 
-        leftAxisColor=attributes.getColor(R.styleable.chartlib_leftAxisColor,Color.GRAY);
+        leftAxisColor=attributes.getColor(R.styleable.chartlib_leftAxisColor, Color.GRAY);
         rightAxisColor=attributes.getColor(R.styleable.chartlib_rightAxisColor,Color.GRAY);
         topAxisColor=attributes.getColor(R.styleable.chartlib_topAxisColor,Color.GRAY);
-        bottomAxisColor=attributes.getColor(R.styleable.chartlib_bottomAxisColor, Color.GRAY);*/
+        bottomAxisColor=attributes.getColor(R.styleable.chartlib_bottomAxisColor, Color.GRAY);
     }
 
     public Chart addSerie(Serie s){
