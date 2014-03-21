@@ -3,7 +3,7 @@ package josercl.chartlib.lib;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
+import android.graphics.Rect;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,19 +52,22 @@ public abstract class Serie {
         if(p.getY()>maxY){ maxY=p.getY();}
     }
 
-    public void draw(Canvas canvas,int width,int height){
+    public void draw(Canvas canvas,Rect chartArea){
         if(!points.isEmpty()) {
             sort();
+
+            int offsetX=chartArea.left;
+            int offsetY=chartArea.top;
 
             double rangeX = maxX-minX;
             double rangeY = maxY-minY;
 
             for (Point p : points) {
 
-                double scaledX = (p.getX()-minX) * width/rangeX;
-                double scaledY = (p.getY()-minY) * height/rangeY;
+                double scaledX = (p.getX()-minX) * chartArea.width()/rangeX;
+                double scaledY = (p.getY()-minY) * chartArea.height()/rangeY;
 
-                drawPoint(canvas, scaledX, scaledY);
+                drawPoint(canvas, scaledX+offsetX, scaledY+offsetY);
             }
             finishDrawing();
         }

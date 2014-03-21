@@ -46,7 +46,6 @@ public class PieSerie extends Serie {
         }
     }
 
-    @Override
     public void draw(Canvas canvas,int width,int height) {
         sort();
         startAngle=0;
@@ -72,7 +71,7 @@ public class PieSerie extends Serie {
         Paint paint2=new Paint();
         paint2.setStrokeWidth(3);
         paint2.setColor(Color.WHITE);
-        //canvas.drawLine(bounds.centerX(),bounds.centerY(),bounds.centerX()+diameter/2,bounds.centerY(),paint2);
+
         startAngle=0;
         for(int i=0;i<points.size();i++){
             startAngle+=((float) points.get(i).getY())*360/((float) total);
