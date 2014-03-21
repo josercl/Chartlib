@@ -1,6 +1,8 @@
 package josercl.chartlib.lib;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -45,10 +47,18 @@ public class PieSerie extends Serie {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas,int width,int height) {
         sort();
-        startAngle=0;
-        getBounds(canvas);
+        startAngle=-90;
+
+        diameter=(height>=width)?width:height;
+
+        float x1=(width-diameter)/2;
+        float y1=(height-diameter)/2;
+        float x2=x1+diameter;
+        float y2=y1+diameter;
+        bounds=new RectF(x1,y1,x2,y2);
+
         for(int i=0;i<points.size();i++){
             Integer []gradient=colors.get(i);
             if(gradient[1]==null) {
@@ -58,26 +68,23 @@ public class PieSerie extends Serie {
             RadialGradient shader=new RadialGradient(bounds.centerX(),bounds.centerY(),diameter/2,gradient[0],gradient[1], Shader.TileMode.CLAMP);
             drawPoint(canvas, points.get(i).getY(), shader);
         }
-        finishDrawing();
+        Paint paint2=new Paint();
+        paint2.setStrokeWidth(3);
+        paint2.setColor(Color.WHITE);
+        canvas.drawLine(bounds.centerX(),bounds.centerY(),bounds.centerX(),bounds.centerY()-diameter/2,paint2);
+        for(int i=0;i<points.size();i++){
+
+        }
     }
 
     public void drawPoint(Canvas canvas, double y, Shader shader) {
         float angle=((float) y)*360/((float) total);
         paint.setShader(shader);
         paint.setDither(true);
-        canvas.drawArc(bounds,startAngle,angle,true,paint);
-        startAngle+=angle;
-    }
 
-    private void getBounds(Canvas canvas){
-        int height=canvas.getHeight();
-        int width=canvas.getWidth();
-        diameter=(height>=width)?width:height;
-        float x1=(width-diameter)/2;
-        float y1=(height-diameter)/2;
-        float x2=x1+diameter;
-        float y2=y1+diameter;
-        bounds=new RectF(x1,y1,x2,y2);
+        canvas.drawArc(bounds, startAngle, angle, true, paint);
+
+        startAngle+=angle;
     }
 
     @Override
