@@ -66,20 +66,20 @@ public class Chart extends RelativeLayout {
 
         chartArea=new Rect(0,0,getWidth(),getHeight());
 
-        leftAxis=new LinearLayout(context);
         LayoutParams leftparams=new LayoutParams(leftAxisWidth, LayoutParams.MATCH_PARENT);
+        leftAxis=new LinearLayout(context);
         leftAxis.setOrientation(LinearLayout.VERTICAL);
         leftAxis.setLayoutParams(leftparams);
 
-        rightAxis=new LinearLayout(context);
         LayoutParams rightparams=new LayoutParams(rightAxisWidth, LayoutParams.MATCH_PARENT);
         rightparams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        rightAxis=new LinearLayout(context);
         rightAxis.setOrientation(LinearLayout.VERTICAL);
         rightAxis.setLayoutParams(rightparams);
 
-        bottomAxis=new LinearLayout(context);
         LayoutParams bottomparams=new LayoutParams(LayoutParams.MATCH_PARENT, bottomAxisHeight);
         bottomparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        bottomAxis=new LinearLayout(context);
         bottomAxis.setOrientation(LinearLayout.HORIZONTAL);
         bottomAxis.setLayoutParams(bottomparams);
 
@@ -88,10 +88,10 @@ public class Chart extends RelativeLayout {
         topAxis.setOrientation(LinearLayout.HORIZONTAL);
         topAxis.setLayoutParams(topparams);
 
-        if(showLeftAxis){addView(leftAxis);}
-        if(showRightAxis){addView(rightAxis);}
-        if(showBottomAxis){addView(bottomAxis);}
-        if(showTopAxis){addView(topAxis);}
+        addView(leftAxis);
+        addView(rightAxis);
+        addView(bottomAxis);
+        addView(topAxis);
     }
 
     public Chart addSerie(Serie s){
@@ -116,39 +116,46 @@ public class Chart extends RelativeLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
 
-        LayoutParams leftparams= (LayoutParams) leftAxis.getLayoutParams();
-        leftparams.width=leftAxisWidth;
-        leftparams.height=getHeight();
-        leftAxis.setLayoutParams(leftparams);
-
-        LayoutParams rightparams= (LayoutParams) rightAxis.getLayoutParams();
-        rightparams.width=rightAxisWidth;
-        rightparams.height=getHeight();
-        rightAxis.setLayoutParams(rightparams);
-
-        LayoutParams bottomparams= (LayoutParams) bottomAxis.getLayoutParams();
-        bottomparams.height=bottomAxisHeight;
-        bottomparams.width=getWidth();
-        bottomAxis.setLayoutParams(bottomparams);
-
-        LayoutParams topparams= (LayoutParams) topAxis.getLayoutParams();
-        topparams.height=topAxisHeight;
-        topparams.width=getWidth();
-        topAxis.setLayoutParams(topparams);
-
         if(!showLeftAxis){leftAxisWidth=0;}
         if(!showRightAxis){rightAxisWidth=0;}
         if(!showBottomAxis){bottomAxisHeight=0;}
         if(!showTopAxis){topAxisHeight=0;}
 
         chartArea.set(leftAxisWidth, topAxisHeight, getWidth()-rightAxisWidth, getHeight()-bottomAxisHeight);
+
+        LayoutParams leftparams = (LayoutParams) leftAxis.getLayoutParams();
+        leftparams.width=leftAxisWidth;
+        leftparams.height=getHeight()-topAxisHeight-bottomAxisHeight;
+        leftparams.topMargin=topAxisHeight;
+        leftAxis.setLayoutParams(leftparams);
+
+        LayoutParams rightparams = (LayoutParams) rightAxis.getLayoutParams();
+        rightparams.width=rightAxisWidth;
+        rightparams.height=getHeight()-topAxisHeight-bottomAxisHeight;
+        rightparams.topMargin=topAxisHeight;
+        rightAxis.setLayoutParams(rightparams);
+
+        LayoutParams bottomparams = (LayoutParams) bottomAxis.getLayoutParams();
+        bottomparams.height=bottomAxisHeight;
+        bottomparams.width=getWidth()-leftAxisWidth-rightAxisWidth;
+        bottomparams.leftMargin=leftAxisWidth;
+        bottomAxis.setLayoutParams(bottomparams);
+
+        LayoutParams topparams = (LayoutParams) topAxis.getLayoutParams();
+        topparams.height=topAxisHeight;
+        topparams.width=getWidth()-leftAxisWidth-rightAxisWidth;
+        topparams.leftMargin=leftAxisWidth;
+        topAxis.setLayoutParams(topparams);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (showGrid){ drawGrid(canvas,chartArea);drawGridLabels(chartArea); }
+        if (showGrid){
+            drawGrid(canvas,chartArea);
+            drawGridLabels();
+        }
         if(series!=null) {
             for (Serie s : series) {
                 s.draw(canvas,chartArea);
@@ -156,29 +163,72 @@ public class Chart extends RelativeLayout {
         }
     }
 
-    private void drawGridLabels(Rect bounds){
-        float horizontalGridSep=bounds.height()/(horizontalGridLines+1);
-        DecimalFormat dm=new DecimalFormat("0.0");
-        for(int i=1;i<=horizontalGridLines;i++){
-            if(showLeftAxis){
-                TextView label=new TextView(getContext());
-                label.setText(dm.format(maxY - i * (maxY - minY) / horizontalGridLines));
-                label.setTextSize(10);
-                label.setTextColor(Color.BLACK);
-                label.setPadding(0,0,leftAxisWidth/4,0);
-                label.setGravity(Gravity.RIGHT);
-                leftAxis.addView(label);
+    private void drawGridLabels(){
+        for(int i=0;i<=horizontalGridLines;i++) {
+            if (showLeftAxis) {
+                drawVerticalAxisLabels(leftAxis,i,leftAxisWidth);
+            }
 
-                LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(leftAxisWidth, ((int) horizontalGridSep)+2*horizontalGridStroke);
-                if(i==1){
-                    params.topMargin=((int) horizontalGridSep + 2*horizontalGridStroke + 2);
-                    params.topMargin-=label.getTextSize()-label.getPaddingTop();
-                }else{
-                    params.topMargin=1;
-                }
-                label.setLayoutParams(params);
+            if (showRightAxis) {
+                drawVerticalAxisLabels(rightAxis,i,rightAxisWidth);
             }
         }
+
+        for(int i=0;i<=verticalGridLines;i++){
+            if(showBottomAxis){
+                drawHorizontalAxisLabels(bottomAxis,i,bottomAxisHeight);
+            }
+            if(showTopAxis){
+                drawHorizontalAxisLabels(topAxis,i,topAxisHeight);
+            }
+        }
+    }
+
+    private void drawHorizontalAxisLabels(LinearLayout axis,int position, int axisHeight){
+        axis.setWeightSum(verticalGridLines);
+        DecimalFormat dm=new DecimalFormat("0.0");
+
+        TextView label = new TextView(getContext());
+        label.setText(dm.format(minX + position * (maxX - minX) / verticalGridLines));
+        label.setTextSize(10);
+        label.setTextColor(Color.BLACK);
+        label.setPadding(0, 0, 0, 0);
+        int gravity = Gravity.TOP;
+
+        label.setGravity(gravity);
+
+        axis.addView(label);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, axisHeight);
+        params.weight = 1;
+
+        label.setLayoutParams(params);
+    }
+
+    private void drawVerticalAxisLabels(LinearLayout axis,int position,int axisWidth){
+        axis.setWeightSum(horizontalGridLines);
+        DecimalFormat dm=new DecimalFormat("0.0");
+
+        TextView label = new TextView(getContext());
+        label.setText(dm.format(maxY - position * (maxY - minY) / horizontalGridLines));
+        label.setTextSize(10);
+        label.setTextColor(Color.BLACK);
+        label.setPadding(0, 0, axisWidth / 4, 0);
+        int gravity = Gravity.RIGHT;
+        if (position > 0) {
+            gravity |= Gravity.BOTTOM;
+        }
+        label.setGravity(gravity);
+
+        axis.addView(label);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(axisWidth, 0);
+
+        params.weight = 1;
+        if (position <= 1) {
+            params.weight = .5f;
+        }
+        label.setLayoutParams(params);
     }
 
     private void drawGrid(Canvas canvas,Rect bounds){
@@ -189,12 +239,12 @@ public class Chart extends RelativeLayout {
 
         gridPaint.setStrokeWidth(verticalGridStroke);
         gridPaint.setColor(verticalGridColor);
-        for (int i = 0; i < verticalGridLines; i++) {
+        for (int i = 0; i <= verticalGridLines; i++) {
             canvas.drawLine(bounds.left + (verticalGridSep * i), bounds.top, bounds.left + (verticalGridSep * i), bounds.bottom, gridPaint);
         }
 
         gridPaint.setStrokeWidth(horizontalGridStroke);
-        for (int i=0; i< horizontalGridLines;i++){
+        for (int i=0; i<= horizontalGridLines;i++){
             canvas.drawLine(bounds.left - leftAxisWidth/8, bounds.top + i*horizontalGridSep,bounds.right + rightAxisWidth/8,bounds.top+i*horizontalGridSep,gridPaint);
         }
     }
