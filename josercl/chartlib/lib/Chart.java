@@ -45,6 +45,8 @@ public class Chart extends RelativeLayout {
 
     int verticalGridLines=10;
     int horizontalGridLines=10;
+    int verticalGridStroke=2;
+    int horizontalGridStroke=2;
 
     private double minX=Double.MAX_VALUE,maxX=Double.MIN_VALUE,minY=Double.MAX_VALUE,maxY=Double.MIN_VALUE;
 
@@ -157,16 +159,24 @@ public class Chart extends RelativeLayout {
     private void drawGridLabels(Rect bounds){
         float horizontalGridSep=bounds.height()/(horizontalGridLines+1);
         DecimalFormat dm=new DecimalFormat("0.0");
-        for(int i=0;i<=horizontalGridLines;i++){
+        for(int i=1;i<=horizontalGridLines;i++){
             if(showLeftAxis){
                 TextView label=new TextView(getContext());
-                label.setMinWidth(leftAxisWidth);
-                label.setHeight(new Double(horizontalGridSep).intValue());
                 label.setText(dm.format(maxY - i * (maxY - minY) / horizontalGridLines));
-                label.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
                 label.setTextSize(10);
+                label.setTextColor(Color.BLACK);
                 label.setPadding(0,0,leftAxisWidth/4,0);
+                label.setGravity(Gravity.RIGHT);
                 leftAxis.addView(label);
+
+                LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(leftAxisWidth, ((int) horizontalGridSep)+2*horizontalGridStroke);
+                if(i==1){
+                    params.topMargin=((int) horizontalGridSep + 2*horizontalGridStroke + 2);
+                    params.topMargin-=label.getTextSize()-label.getPaddingTop();
+                }else{
+                    params.topMargin=1;
+                }
+                label.setLayoutParams(params);
             }
         }
     }
@@ -176,15 +186,16 @@ public class Chart extends RelativeLayout {
         float verticalGridSep=bounds.width()/verticalGridLines;
 
         Paint gridPaint=new Paint();
-        gridPaint.setStrokeWidth(2);
 
+        gridPaint.setStrokeWidth(verticalGridStroke);
         gridPaint.setColor(verticalGridColor);
         for (int i = 0; i < verticalGridLines; i++) {
             canvas.drawLine(bounds.left + (verticalGridSep * i), bounds.top, bounds.left + (verticalGridSep * i), bounds.bottom, gridPaint);
         }
 
+        gridPaint.setStrokeWidth(horizontalGridStroke);
         for (int i=0; i< horizontalGridLines;i++){
-            canvas.drawLine(bounds.left - leftAxisWidth/4, bounds.top + i*horizontalGridSep,bounds.right + rightAxisWidth/4,bounds.top+i*horizontalGridSep,gridPaint);
+            canvas.drawLine(bounds.left - leftAxisWidth/8, bounds.top + i*horizontalGridSep,bounds.right + rightAxisWidth/8,bounds.top+i*horizontalGridSep,gridPaint);
         }
     }
 
@@ -290,5 +301,21 @@ public class Chart extends RelativeLayout {
 
     public void setHorizontalGridGap(double horizontalGridGap) {
         this.horizontalGridGap = horizontalGridGap;
+    }
+
+    public int getVerticalGridStroke() {
+        return verticalGridStroke;
+    }
+
+    public void setVerticalGridStroke(int verticalGridStroke) {
+        this.verticalGridStroke = verticalGridStroke;
+    }
+
+    public int getHorizontalGridStroke() {
+        return horizontalGridStroke;
+    }
+
+    public void setHorizontalGridStroke(int horizontalGridStroke) {
+        this.horizontalGridStroke = horizontalGridStroke;
     }
 }
