@@ -1,6 +1,8 @@
 package josercl.chartlib.lib;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 /**
  * Created by eseprin on 3/20/14.
@@ -26,6 +28,7 @@ public class LinearSerie extends Serie {
             float y2=(float) y;
             canvas.drawLine(x1,y1,x2,y2,paint);
         }
+
         last=new Point(x,y);
     }
 

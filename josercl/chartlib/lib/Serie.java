@@ -67,7 +67,7 @@ public abstract class Serie {
                 double scaledX = (p.getX()-minX) * chartArea.width()/rangeX;
                 double scaledY = (p.getY()-minY) * chartArea.height()/rangeY;
 
-                drawPoint(canvas, scaledX+offsetX, scaledY+offsetY);
+                drawPoint(canvas, scaledX+offsetX, chartArea.height()-scaledY+offsetY);
             }
             finishDrawing();
         }
@@ -77,8 +77,8 @@ public abstract class Serie {
 
     public abstract void drawPoint(Canvas canvas,double x,double y);
 
-    public void setStroke(float stroke){
-        this.stroke=stroke;
+    public void setStroke(float stroke) {
+        this.stroke = stroke;
         paint.setStrokeWidth(stroke);
     }
 

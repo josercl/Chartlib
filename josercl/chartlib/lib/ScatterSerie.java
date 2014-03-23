@@ -13,6 +13,7 @@ public class ScatterSerie extends Serie {
     public ScatterSerie(){
         super();
         setPointFigureType(PointFigureType.NONE);
+        setStroke(15);
     }
 
     @Override

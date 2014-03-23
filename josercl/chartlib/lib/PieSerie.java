@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 
@@ -46,17 +47,17 @@ public class PieSerie extends Serie {
         }
     }
 
-    public void draw(Canvas canvas,int width,int height) {
+    public void draw(Canvas canvas,Rect area) {
         sort();
         startAngle=0;
 
-        diameter=(height>=width)?width:height;
+        diameter=(area.height()>=area.width())?area.width():area.height();
 
-        float x1=(width-diameter)/2;
-        float y1=(height-diameter)/2;
+        float x1=(area.width()-diameter)/2;
+        float y1=(area.height()-diameter)/2;
         float x2=x1+diameter;
         float y2=y1+diameter;
-        bounds=new RectF(x1,y1,x2,y2);
+        bounds=new RectF(x1+area.left,y1+area.top,x2+area.left,y2+area.top);
 
         for(int i=0;i<points.size();i++){
             Integer []gradient=colors.get(i);
