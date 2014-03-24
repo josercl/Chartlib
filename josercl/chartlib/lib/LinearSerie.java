@@ -1,15 +1,31 @@
 package josercl.chartlib.lib;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.Rect;
 
 /**
  * Created by eseprin on 3/20/14.
  */
 public class LinearSerie extends Serie {
-    Point last=null;
-    boolean showPoints=false;
+    private Point last=null;
+    private boolean showPoints=false;
+    private ScatterSerie scatter;
+    protected PointFigureType pointFigureType=PointFigureType.SQUARE;
+
+    public LinearSerie(){}
+
+    public LinearSerie(boolean showPoints) {
+        super();
+        setShowPoints(showPoints);
+    }
+
+    @Override
+    public void addPoint(Point p) {
+        super.addPoint(p);
+        if(showPoints){
+            scatter.addPoint(p);
+        }
+    }
 
     public boolean isShowPoints() {
         return showPoints;
@@ -17,6 +33,24 @@ public class LinearSerie extends Serie {
 
     public void setShowPoints(boolean showPoints) {
         this.showPoints = showPoints;
+        if(showPoints){
+            scatter=new ScatterSerie();
+        }
+    }
+
+    public void setPointFigureType(PointFigureType pointFigureType) {
+        this.pointFigureType = pointFigureType;
+    }
+
+    @Override
+    public void draw(Canvas canvas, Rect chartArea) {
+        super.draw(canvas, chartArea);
+        if(showPoints){
+            scatter.setStroke(this.stroke*2.5f);
+            scatter.setColor(this.paint.getColor());
+            scatter.setPointFigureType(this.pointFigureType);
+            scatter.draw(canvas,chartArea);
+        }
     }
 
     @Override

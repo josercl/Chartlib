@@ -19,7 +19,6 @@ public abstract class Serie {
     protected List<Point> points;
     protected float stroke=5;
     protected Paint paint=new Paint();
-    protected PointFigureType pointFigureType;
 
     double minX=Double.MAX_VALUE,maxX=Double.MIN_VALUE,minY=Double.MAX_VALUE,maxY=Double.MIN_VALUE;
 
@@ -73,6 +72,10 @@ public abstract class Serie {
         }
     }
 
+    public boolean isEmpty(){
+        return points.isEmpty();
+    }
+
     public void finishDrawing(){}
 
     public abstract void drawPoint(Canvas canvas,double x,double y);
@@ -87,14 +90,6 @@ public abstract class Serie {
     }
     public void setColor(String c){
         setColor(Color.parseColor(c));
-    }
-
-    public PointFigureType getPointFigureType() {
-        return pointFigureType;
-    }
-
-    public void setPointFigureType(PointFigureType pointFigureType) {
-        this.pointFigureType = pointFigureType;
     }
 
     public String getName() {

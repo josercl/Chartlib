@@ -10,10 +10,20 @@ import android.graphics.RectF;
  */
 public class ScatterSerie extends Serie {
 
+    protected PointFigureType pointFigureType;
+
     public ScatterSerie(){
         super();
-        setPointFigureType(PointFigureType.NONE);
+        setPointFigureType(PointFigureType.SQUARE);
         setStroke(15);
+    }
+
+    public PointFigureType getPointFigureType() {
+        return pointFigureType;
+    }
+
+    public void setPointFigureType(PointFigureType pointFigureType) {
+        this.pointFigureType = pointFigureType;
     }
 
     @Override
