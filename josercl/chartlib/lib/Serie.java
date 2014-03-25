@@ -78,13 +78,11 @@ public abstract class Serie {
             double rangeY = maxY-minY;
 
             for (Point p : points) {
-
-                double scaledX = (p.getX()-minX) * chartArea.width()/rangeX;
-                double scaledY = (p.getY()-minY) * chartArea.height()/rangeY;
+                double scaledX = (p.getX()-minX) * chartArea.width()/(rangeX);
+                double scaledY = (p.getY()-minY) * chartArea.height()/(rangeY);
 
                 drawPoint(canvas, scaledX+offsetX, chartArea.height()-scaledY+offsetY);
             }
-            //finishDrawing();
         }
     }
 

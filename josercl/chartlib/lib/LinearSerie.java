@@ -52,6 +52,7 @@ public class LinearSerie extends Serie {
             scatter.setPointFigureType(this.pointFigureType);
             scatter.draw(canvas,chartArea);
         }
+        last=null;
     }
 
     @Override
@@ -65,10 +66,5 @@ public class LinearSerie extends Serie {
         }
 
         last=new Point(x,y);
-    }
-
-    @Override
-    public void finishDrawing() {
-        last=null;
     }
 }

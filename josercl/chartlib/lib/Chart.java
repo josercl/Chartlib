@@ -62,6 +62,7 @@ public class Chart extends RelativeLayout {
      */
     private int topAxisHeight=40;
 
+
     /* Grid attributes */
     /**
      * Grid lines color, default to ARGB #80c0c0c0
