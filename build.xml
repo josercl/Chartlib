@@ -7,7 +7,7 @@
     <property name="android.sdk.home" location="/home/eseprin/android-sdk-linux"/>
 
     <path id="chartlib.classpath">
-        <pathelement location="${android.sdk.home}/platforms/android-19/android.jar"/>
+        <pathelement location="${android.sdk.home}/platforms/android-10/android.jar"/>
     </path>
 
     <target name="init">
