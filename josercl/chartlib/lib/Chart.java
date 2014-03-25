@@ -15,38 +15,100 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * View used to draw charts
+ * @author Jos&eacute; Rafael Carrero Le&oacute;n &lt;<a href="mailto:josercl@gmail.com">josercl@gmail.com</a>&gt;
+ * @version 1.0
+ */
 public class Chart extends RelativeLayout {
 
-    private LinearLayout leftAxis,rightAxis,topAxis,bottomAxis;
-    private boolean showLeftAxis=false,showRightAxis=false,showTopAxis=false,showBottomAxis=false;
     private List<Serie> series;
-    private Rect chartArea;
 
+    private Rect chartArea;
+    private double minX=Double.MAX_VALUE,maxX=Double.MIN_VALUE,minY=Double.MAX_VALUE,maxY=Double.MIN_VALUE;
+
+    /* Axis */
+    private LinearLayout leftAxis,rightAxis,topAxis,bottomAxis;
+    /**
+     * Boolean value to control left axis and labels
+     */
+    private boolean showLeftAxis=false;
+    /**
+     * Boolean value to control right axis and labels
+     */
+    private boolean showRightAxis=false;
+    /**
+     * Boolean value to control top axis and labels
+     */
+    private boolean showTopAxis=false;
+    /**
+     * Boolean value to control bottom axis and labels
+     */
+    private boolean showBottomAxis=false;
+    /**
+     * Left axis width, 40 by default
+     */
     private int leftAxisWidth=40;
+    /**
+     * Right axis width, 40 by default
+     */
     private int rightAxisWidth=40;
+    /**
+     * Bottom axis width, 40 by default
+     */
     private int bottomAxisHeight=40;
+    /**
+     * Top axis width, 40 by default
+     */
     private int topAxisHeight=40;
 
+    /* Grid attributes */
+    /**
+     * Grid lines color, default to ARGB #80c0c0c0
+     */
     private int gridColor=Color.parseColor("#80c0c0c0");
-    private double horizontalGridGap=1d;
-    private double verticalGridGap=1d;
+    /**
+     * Number of vertical grid lines, default to 10
+     */
     private int verticalGridLines=10;
+    /**
+     * Number of horizontal grid lines, default to 10
+     */
     private int horizontalGridLines=10;
+    /**
+     * Grid lines stroke width, default to 2
+     */
     private int gridStroke=2;
+    /**
+     * Boolean value that controls grid visibility
+     */
     private boolean showGrid=true;
 
     private final DecimalFormat dm=new DecimalFormat("0.#");
 
-    private double minX=Double.MAX_VALUE,maxX=Double.MIN_VALUE,minY=Double.MAX_VALUE,maxY=Double.MIN_VALUE;
-
+    /**
+     * Simple constructor when creating a view from code
+     * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
+     */
     public Chart(Context context) {
         this(context,null,0);
     }
 
+    /**
+     * Constructor that is called when inflating a view from XML. This is called when a view is being constructed from an XML file, supplying attributes that were specified in the XML file. This version uses a default style of 0, so the only attribute values applied are those in the Context's Theme and the given AttributeSet.
+     * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
+     * @param attrs The Context the view is running in, through which it can access the current theme, resources, etc.
+     */
     public Chart(Context context, AttributeSet attrs) {
         this(context,attrs,0);
     }
 
+    /**
+     * Perform inflation from XML and apply a class-specific base style. This constructor of View allows subclasses to use their own base style when they are inflating. For example, a Button class's constructor would call this version of the super class constructor and supply R.attr.buttonStyle for defStyle; this allows the theme's button style to modify all of the base view attributes (in particular its background) as well as the Button class's attributes.
+     * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the view.
+     * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource to apply to this view. If 0, no default style will be applied.
+     */
     public Chart(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -142,7 +204,11 @@ public class Chart extends RelativeLayout {
         }
     }
 
-    public Chart addSerie(Serie s){
+    /**
+     * Adds a Serie to the chart
+     * @param s The Serie that will be added to the chart
+     */
+    public void addSerie(Serie s){
         series.add(s);
         if(s.getMinX() < minX){ minX = s.getMinX();}
         if(s.getMaxX() > maxX){ maxX = s.getMaxX();}
@@ -156,17 +222,28 @@ public class Chart extends RelativeLayout {
             se.maxX = maxX;
             se.maxY = maxY;
         }
-        return this;
     }
 
+    /**
+     * Returns the serie at the specified order in the chart
+     * @param i The index of the serie to return
+     * @return The serie that was added in the specified index to the chart
+     */
     public Serie getSerie(int i){
         return series.get(i);
     }
 
+    /**
+     *
+     * @return The total of series added to the chart
+     */
     public int getSeriesCount(){
         return series.size();
     }
 
+    /**
+     * Removes all series and clears the chart
+     */
     public void clear(){
         for(int i=0;i<series.size();i++){
             series.remove(i);
@@ -179,6 +256,9 @@ public class Chart extends RelativeLayout {
         minX=Double.MAX_VALUE;maxX=Double.MIN_VALUE;minY=Double.MAX_VALUE;maxY=Double.MIN_VALUE;
     }
 
+    /**
+     * Draws numbers in all the visible axes
+     */
     private void drawGridLabels(){
         if (showLeftAxis) {
             drawVerticalAxisLabels(leftAxis,leftAxisWidth);
@@ -196,6 +276,11 @@ public class Chart extends RelativeLayout {
         }
     }
 
+    /**
+     * Used to draw labels on Top/Bottom axis
+     * @param axis The axis on which the labels will be drawn
+     * @param axisHeight The axis height
+     */
     private void drawHorizontalAxisLabels(LinearLayout axis, int axisHeight){
         axis.setWeightSum(verticalGridLines);
         TextView label = null;
@@ -224,6 +309,11 @@ public class Chart extends RelativeLayout {
         }
     }
 
+    /**
+     * Used to draw labels on Left/Right axis
+     * @param axis The axis on which the labels will be drawn
+     * @param axisWidth The axis width
+     */
     private void drawVerticalAxisLabels(LinearLayout axis,int axisWidth){
         axis.setWeightSum(horizontalGridLines);
         TextView label = null;
@@ -258,11 +348,22 @@ public class Chart extends RelativeLayout {
         }
     }
 
+    /**
+     * Shortcut to showLeftAxis(left);showRightAxis(right);showTopAxis(top);showBottomAxis(bottom)
+     * @param left if true, sets the left axis as visible
+     * @param top if true, sets the top axis as visible
+     * @param right if true, sets the right axis as visible
+     * @param bottom if true, sets the bottom axis as visible
+     * @see #showLeftAxis(boolean)
+     * @see #showRightAxis(boolean)
+     * @see #showTopAxis(boolean)
+     * @see #showBottomAxis(boolean)
+     */
     public void showAxis(boolean left,boolean top,boolean right,boolean bottom){
-        setShowLeftAxis(left);
-        setShowRightAxis(right);
-        setShowTopAxis(top);
-        setShowBottomAxis(bottom);
+        showLeftAxis(left);
+        showRightAxis(right);
+        showTopAxis(top);
+        showBottomAxis(bottom);
     }
 
     private void drawGrid(Canvas canvas,Rect bounds){
@@ -283,35 +384,39 @@ public class Chart extends RelativeLayout {
         }
     }
 
-    public boolean isShowLeftAxis() {
-        return showLeftAxis;
-    }
-
-    public void setShowLeftAxis(boolean showLeftAxis) {
+    /**
+     * Controls left axis visibility
+     * @param showLeftAxis if true, the left axis and labels will be displayed
+     * @see #showAxis(boolean, boolean, boolean, boolean)
+     */
+    public void showLeftAxis(boolean showLeftAxis) {
         this.showLeftAxis = showLeftAxis;
     }
 
-    public boolean isShowRightAxis() {
-        return showRightAxis;
-    }
-
-    public void setShowRightAxis(boolean showRightAxis) {
+    /**
+     * Controls right axis visibility
+     * @param showRightAxis if true, the right axis and labels will be displayed
+     * @see #showAxis(boolean, boolean, boolean, boolean)
+     */
+    public void showRightAxis(boolean showRightAxis) {
         this.showRightAxis = showRightAxis;
     }
 
-    public boolean isShowTopAxis() {
-        return showTopAxis;
-    }
-
-    public void setShowTopAxis(boolean showTopAxis) {
+    /**
+     * Controls top axis visibility
+     * @param showTopAxis if true, the top axis and labels will be displayed
+     * @see #showAxis(boolean, boolean, boolean, boolean)
+     */
+    public void showTopAxis(boolean showTopAxis) {
         this.showTopAxis = showTopAxis;
     }
 
-    public boolean isShowBottomAxis() {
-        return showBottomAxis;
-    }
-
-    public void setShowBottomAxis(boolean showBottomAxis) {
+    /**
+     * Controls bottom axis visibility
+     * @param showBottomAxis if true, the bottom axis and labels will be displayed
+     * @see #showAxis(boolean, boolean, boolean, boolean)
+     */
+    public void showBottomAxis(boolean showBottomAxis) {
         this.showBottomAxis = showBottomAxis;
     }
 
@@ -347,28 +452,8 @@ public class Chart extends RelativeLayout {
         this.topAxisHeight = topAxisHeight;
     }
 
-    public boolean isShowGrid() {
-        return showGrid;
-    }
-
-    public void setShowGrid(boolean showGrid) {
+    public void showGrid(boolean showGrid) {
         this.showGrid = showGrid;
-    }
-
-    public double getVerticalGridGap() {
-        return verticalGridGap;
-    }
-
-    public void setVerticalGridGap(double verticalGridGap) {
-        this.verticalGridGap = verticalGridGap;
-    }
-
-    public double getHorizontalGridGap() {
-        return horizontalGridGap;
-    }
-
-    public void setHorizontalGridGap(double horizontalGridGap) {
-        this.horizontalGridGap = horizontalGridGap;
     }
 
     public int getHorizontalGridLines() {

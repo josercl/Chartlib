@@ -6,7 +6,8 @@ import android.graphics.Path;
 import android.graphics.RectF;
 
 /**
- * Created by eseprin on 3/20/14.
+ * @author Jos&eacute; Rafael Carrero Le&oacute;n &lt;<a href="mailto:josercl@gmail.com">josercl@gmail.com</a>&gt;
+ * @version 1.0
  */
 public class ScatterSerie extends Serie {
 

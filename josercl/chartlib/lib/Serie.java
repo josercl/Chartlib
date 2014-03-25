@@ -11,7 +11,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by eseprin on 3/20/14.
+ * Base Serie class
+ * @author Jos&eacute; Rafael Carrero Le&oacute;n &lt;<a href="mailto:josercl@gmail.com">josercl@gmail.com</a>&gt;
+ * @version 1.0
  */
 public abstract class Serie {
 
@@ -32,11 +34,19 @@ public abstract class Serie {
         Collections.sort(points);
     }
 
+    /**
+     * Adds a point to the Serie
+     * @param p The new {@link Point}
+     */
     public void addPoint(Point p){
         points.add(p);
         calculateRange(p);
     }
 
+    /**
+     * Adds all points of the collection to the Serie
+     * @param otherPoints The {@link Point} collection
+     */
     public void addPoints(Collection<? extends Point> otherPoints){
         points.addAll(otherPoints);
         for(Point p:otherPoints){
@@ -51,6 +61,12 @@ public abstract class Serie {
         if(p.getY()>maxY){ maxY=p.getY();}
     }
 
+    /**
+     * Method used to draw all the points of the serie
+     * @param canvas The canvas used to draw the points of the serie
+     * @param chartArea Bounds used to draw the points
+     *
+     */
     public void draw(Canvas canvas,Rect chartArea){
         if(!points.isEmpty()) {
             sort();
@@ -68,28 +84,51 @@ public abstract class Serie {
 
                 drawPoint(canvas, scaledX+offsetX, chartArea.height()-scaledY+offsetY);
             }
-            finishDrawing();
+            //finishDrawing();
         }
     }
 
+    /**
+     * Indicates if the series is empty
+     * @return If the serie is empty
+     */
     public boolean isEmpty(){
         return points.isEmpty();
     }
 
-    public void finishDrawing(){}
+    //public void finishDrawing(){}
 
+    /**
+     * Draws a point of the serie at (x,y) coordinate
+     * @param canvas The canvas used to draw the point
+     * @param x X coordinate of the point
+     * @param y Y coordinate of the point
+     */
     public abstract void drawPoint(Canvas canvas,double x,double y);
 
+    /**
+     * Sets the stroke used to draw the points of the serie
+     * @param stroke The stroke to use
+     */
     public void setStroke(float stroke) {
         this.stroke = stroke;
         paint.setStrokeWidth(stroke);
     }
 
+    /**
+     * Sets the color used to draw the points of the serie
+     * @param color color to use, black by default
+     */
     public void setColor(int color) {
         paint.setColor(color);
     }
-    public void setColor(String c){
-        setColor(Color.parseColor(c));
+
+    /**
+     * Sets the color used to draw the points of the serie
+     * @param color Color in ARGB or RGB format
+     */
+    public void setColor(String color){
+        setColor(Color.parseColor(color));
     }
 
     public String getName() {
@@ -108,18 +147,34 @@ public abstract class Serie {
         this.points = points;
     }
 
+    /**
+     * Gets the minimum X value of the serie
+     * @return The minimum value of the X coordinate of the points of the serie
+     */
     public double getMinX() {
         return minX;
     }
 
+    /**
+     * Gets the maximum X value of the serie
+     * @return The maximum value of the X coordinate of the points of the serie
+     */
     public double getMaxX() {
         return maxX;
     }
 
+    /**
+     * Gets the minimum Y value of the serie
+     * @return The minimum value of the Y coordinate of the points of the serie
+     */
     public double getMinY() {
         return minY;
     }
 
+    /**
+     * Gets the maximum Y value of the serie
+     * @return The maximum value of the Y coordinate of the points of the serie
+     */
     public double getMaxY() {
         return maxY;
     }

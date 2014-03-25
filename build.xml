@@ -3,6 +3,7 @@
     <property name="src" location="."/>
     <property name="build" location="bin"/>
     <property name="dist" location="dist"/>
+    <property name="doc" location="doc"/>
 
     <property name="android.sdk.home" location="/home/eseprin/android-sdk-linux"/>
 
@@ -27,5 +28,10 @@
     <target name="jar" depends="compile" description="Create library JAR file">
         <mkdir dir="${dist}"/>
         <jar jarfile="${dist}/chartlib.jar" basedir="${build}"/>
+    </target>
+
+    <target name="doc" depends="compile" description="Javadoc documentation">
+        <mkdir dir="${doc}"/>
+        <javadoc destdir="${doc}" sourcepath="${src}" classpathref="chartlib.classpath"/>
     </target>
 </project>
