@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="chartlib" default="jar" basedir=".">
+    <property name="src" location="."/>
+    <property name="build" location="bin"/>
+    <property name="dist" location="dist"/>
+
+    <property name="android.sdk.home" location="/home/eseprin/android-sdk-linux"/>
+
+    <path id="chartlib.classpath">
+        <pathelement location="${android.sdk.home}/platforms/android-19/android.jar"/>
+    </path>
+
+    <target name="init">
+        <tstamp />
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="clean" description="clean up">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+    <target name="compile" depends="init" description="compile source">
+        <javac srcdir="${src}" destdir="${build}" classpathref="chartlib.classpath"/>
+    </target>
+
+    <target name="jar" depends="compile" description="Create library JAR file">
+        <mkdir dir="${dist}"/>
+        <jar jarfile="${dist}/chartlib.jar" basedir="${build}"/>
+    </target>
+</project>
