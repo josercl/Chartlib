@@ -23,20 +23,10 @@ public class LinearSerie extends Serie {
     @Override
     public void addPoint(Point p) {
         super.addPoint(p);
-        if(showPoints){
-            scatter.addPoint(p);
-        }
-    }
-
-    public boolean isShowPoints() {
-        return showPoints;
     }
 
     public void setShowPoints(boolean showPoints) {
         this.showPoints = showPoints;
-        if(showPoints){
-            scatter=new ScatterSerie();
-        }
     }
 
     public void setPointFigureType(PointFigureType pointFigureType) {
@@ -47,6 +37,8 @@ public class LinearSerie extends Serie {
     public void draw(Canvas canvas, Rect chartArea) {
         super.draw(canvas, chartArea);
         if(showPoints){
+            scatter=new ScatterSerie();
+            scatter.addPoints(points);
             scatter.setStroke(this.stroke*2.5f);
             scatter.setColor(this.paint.getColor());
             scatter.setPointFigureType(this.pointFigureType);

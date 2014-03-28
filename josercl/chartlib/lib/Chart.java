@@ -79,7 +79,7 @@ public class Chart extends RelativeLayout {
     /**
      * Grid lines stroke width, default to 2
      */
-    private int gridStroke=2;
+    private int gridStroke=1;
     /**
      * Boolean value that controls grid visibility
      */
@@ -217,12 +217,12 @@ public class Chart extends RelativeLayout {
         if(s.getMinY() < minY){ minY = s.getMinY();}
         if(s.getMaxY() > maxY){ maxY = s.getMaxY();}
 
-        for(Serie se:series) {
-            se.minX = minX;
-            se.minY = minY;
-            se.maxX = maxX;
-            se.maxY = maxY;
-        }
+        /*for(Serie se:series) {
+            se.setMinX(minX);
+            se.setMinY(minY);
+            se.setMaxX(maxX);
+            se.setMaxY(maxY);
+        }*/
     }
 
     /**
@@ -368,7 +368,7 @@ public class Chart extends RelativeLayout {
     }
 
     private void drawGrid(Canvas canvas,Rect bounds){
-        float horizontalGridSep=bounds.height()/horizontalGridLines;
+        float horizontalGridSep=(bounds.height()-2*gridStroke)/horizontalGridLines;
         float verticalGridSep=bounds.width()/verticalGridLines;
 
         Paint gridPaint=new Paint();
@@ -377,12 +377,13 @@ public class Chart extends RelativeLayout {
         gridPaint.setColor(gridColor);
 
         for (int i = 0; i <= verticalGridLines; i++) {
-            canvas.drawLine(bounds.left + (verticalGridSep * i), bounds.top, bounds.left + (verticalGridSep * i), bounds.bottom, gridPaint);
+            canvas.drawLine(bounds.left + (i*verticalGridSep) + gridStroke, bounds.top, bounds.left + (i*verticalGridSep) + gridStroke, bounds.bottom, gridPaint);
         }
 
-        for (int i=0; i<= horizontalGridLines;i++){
-            canvas.drawLine(bounds.left - leftAxisWidth/8, bounds.top + i*horizontalGridSep,bounds.right + rightAxisWidth/8,bounds.top+i*horizontalGridSep,gridPaint);
+        for (int i=0; i<horizontalGridLines;i++){
+            canvas.drawLine(bounds.left - leftAxisWidth/8, bounds.top + i*horizontalGridSep+gridStroke,bounds.right + rightAxisWidth/8,bounds.top+i*horizontalGridSep+gridStroke,gridPaint);
         }
+        canvas.drawLine(bounds.left - leftAxisWidth/8, bounds.bottom-gridStroke,bounds.right + rightAxisWidth/8,bounds.bottom-gridStroke,gridPaint);
     }
 
     /**

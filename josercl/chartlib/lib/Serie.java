@@ -22,7 +22,9 @@ public abstract class Serie {
     protected float stroke=5;
     protected Paint paint=new Paint();
 
-    double minX=Double.MAX_VALUE,maxX=Double.MIN_VALUE,minY=Double.MAX_VALUE,maxY=Double.MIN_VALUE;
+    private double gapX=0,gapY=0;
+
+    protected double minX=Double.MAX_VALUE,maxX=Double.MIN_VALUE,minY=Double.MAX_VALUE,maxY=Double.MIN_VALUE;
 
     public Serie(){
         setColor(Color.BLACK);
@@ -59,6 +61,8 @@ public abstract class Serie {
         if(p.getX()>maxX){ maxX=p.getX();}
         if(p.getY()<minY){ minY=p.getY();}
         if(p.getY()>maxY){ maxY=p.getY();}
+        //gapX=(maxX-minX)/10;
+        //gapY=(maxY-minY)/10;
     }
 
     /**
@@ -69,7 +73,7 @@ public abstract class Serie {
      */
     public void draw(Canvas canvas,Rect chartArea){
         if(!points.isEmpty()) {
-            sort();
+            //sort();
 
             int offsetX=chartArea.left;
             int offsetY=chartArea.top;
@@ -78,10 +82,10 @@ public abstract class Serie {
             double rangeY = maxY-minY;
 
             for (Point p : points) {
-                double scaledX = (p.getX()-minX) * chartArea.width()/(rangeX);
-                double scaledY = (p.getY()-minY) * chartArea.height()/(rangeY);
+                double scaledX = (p.getX()-minX + gapX) * (chartArea.width())/(rangeX);
+                double scaledY = (p.getY()-minY + gapY) * (chartArea.height())/(rangeY);
 
-                drawPoint(canvas, scaledX+offsetX, chartArea.height()-scaledY+offsetY);
+                drawPoint(canvas, scaledX + offsetX, chartArea.height() - scaledY + offsetY);
             }
         }
     }
@@ -150,7 +154,7 @@ public abstract class Serie {
      * @return The minimum value of the X coordinate of the points of the serie
      */
     public double getMinX() {
-        return minX;
+        return minX-gapX;
     }
 
     /**
@@ -158,7 +162,7 @@ public abstract class Serie {
      * @return The maximum value of the X coordinate of the points of the serie
      */
     public double getMaxX() {
-        return maxX;
+        return maxX+gapX;
     }
 
     /**
@@ -166,7 +170,7 @@ public abstract class Serie {
      * @return The minimum value of the Y coordinate of the points of the serie
      */
     public double getMinY() {
-        return minY;
+        return minY-gapY;
     }
 
     /**
@@ -174,6 +178,22 @@ public abstract class Serie {
      * @return The maximum value of the Y coordinate of the points of the serie
      */
     public double getMaxY() {
-        return maxY;
+        return maxY+gapY;
+    }
+
+    public void setMinX(double minX) {
+        this.minX = minX;
+    }
+
+    public void setMaxX(double maxX) {
+        this.maxX = maxX;
+    }
+
+    public void setMinY(double minY) {
+        this.minY = minY;
+    }
+
+    public void setMaxY(double maxY) {
+        this.maxY = maxY;
     }
 }
