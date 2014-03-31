@@ -15,7 +15,7 @@ import java.util.List;
  * @author Jos&eacute; Rafael Carrero Le&oacute;n &lt;<a href="mailto:josercl@gmail.com">josercl@gmail.com</a>&gt;
  * @version 1.0
  */
-public abstract class Serie {
+public abstract class Serie{
 
     protected String name;
     protected List<Point> points;
@@ -73,7 +73,7 @@ public abstract class Serie {
      */
     public void draw(Canvas canvas,Rect chartArea){
         if(!points.isEmpty()) {
-            //sort();
+            sort();
 
             int offsetX=chartArea.left;
             int offsetY=chartArea.top;
@@ -147,6 +147,30 @@ public abstract class Serie {
 
     public void setPoints(List<Point> points) {
         this.points = points;
+    }
+
+    public double[] getXCoordinates(){
+        double[] xs=null;
+        if(!points.isEmpty()){
+            xs=new double[points.size()];
+            int i=0;
+            for(Point p:points){
+                xs[i++]=p.getX();
+            }
+        }
+        return xs;
+    }
+
+    public double[] getYCoordinates(){
+        double[] ys=null;
+        if(!points.isEmpty()){
+            ys=new double[points.size()];
+            int i=0;
+            for(Point p:points){
+                ys[i++]=p.getY();
+            }
+        }
+        return ys;
     }
 
     /**
