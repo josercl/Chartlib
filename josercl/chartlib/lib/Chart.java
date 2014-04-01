@@ -360,7 +360,7 @@ public class Chart extends RelativeLayout {
      * @see #showTopAxis(boolean)
      * @see #showBottomAxis(boolean)
      */
-    public void showAxis(boolean left,boolean top,boolean right,boolean bottom){
+    public void showAxes(boolean left,boolean top,boolean right,boolean bottom){
         showLeftAxis(left);
         showRightAxis(right);
         showTopAxis(top);

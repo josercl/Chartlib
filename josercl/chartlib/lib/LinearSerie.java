@@ -12,11 +12,13 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
  * @version 1.0
  */
 public class LinearSerie extends Serie {
-    private Point last=null;
-    private boolean showPoints=false,interpolate=false;
+    protected Point last=null;
+    protected boolean showPoints=false,interpolate=false;
     private ScatterSerie scatter;
     protected PointFigureType pointFigureType=PointFigureType.SQUARE;
 
+    protected LinearSerie splinedLinear;
+    
     public LinearSerie(){}
 
     public LinearSerie(boolean showPoints) {
@@ -43,17 +45,17 @@ public class LinearSerie extends Serie {
             super.draw(canvas, chartArea);
         }else{
             if(points.size()>2) {
-                LinearSerie clon = new LinearSerie();
-                clon.setColor(paint.getColor());
-                clon.setInterpolate(false);
-                clon.setStroke(stroke);
+                splinedLinear = new LinearSerie();
+                splinedLinear.setColor(paint.getColor());
+                splinedLinear.setInterpolate(false);
+                splinedLinear.setStroke(stroke);
                 SplineInterpolator interpolator = new SplineInterpolator();
                 double[] xs = getXCoordinates();
                 PolynomialSplineFunction function = interpolator.interpolate(xs, getYCoordinates());
                 for (double x = xs[0]; x <= xs[xs.length - 1]; x += .1d) {
-                    clon.addPoint(new Point(x, function.value(x)));
+                    splinedLinear.addPoint(new Point(x, function.value(x)));
                 }
-                clon.draw(canvas, chartArea);
+                splinedLinear.draw(canvas, chartArea);
             }else{
                 super.draw(canvas,chartArea);
             }
