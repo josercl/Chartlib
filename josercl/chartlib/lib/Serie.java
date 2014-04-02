@@ -21,6 +21,7 @@ public abstract class Serie{
     protected List<Point> points;
     protected float stroke=5;
     protected Paint paint=new Paint();
+    protected int color;
 
     private double gapX=0,gapY=0;
 
@@ -123,6 +124,7 @@ public abstract class Serie{
      */
     public void setColor(int color) {
         paint.setColor(color);
+        this.color=color;
     }
 
     /**
@@ -219,5 +221,9 @@ public abstract class Serie{
 
     public void setMaxY(double maxY) {
         this.maxY = maxY;
+    }
+
+    public int getColor() {
+        return color;
     }
 }
