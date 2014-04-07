@@ -175,6 +175,13 @@ public abstract class Serie{
         return ys;
     }
 
+    public void clear(){
+        points.clear();
+        setStroke(5);
+        setColor(Color.BLACK);
+        minX=Double.MAX_VALUE;maxX=Double.MIN_VALUE;minY=Double.MAX_VALUE;maxY=Double.MIN_VALUE;
+    }
+
     /**
      * Gets the minimum X value of the serie
      * @return The minimum value of the X coordinate of the points of the serie

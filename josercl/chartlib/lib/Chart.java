@@ -217,12 +217,12 @@ public class Chart extends RelativeLayout {
         if(s.getMinY() < minY){ minY = s.getMinY();}
         if(s.getMaxY() > maxY){ maxY = s.getMaxY();}
 
-        /*for(Serie se:series) {
+        for(Serie se:series) {
             se.setMinX(minX);
             se.setMinY(minY);
             se.setMaxX(maxX);
             se.setMaxY(maxY);
-        }*/
+        }
     }
 
     /**
@@ -389,7 +389,7 @@ public class Chart extends RelativeLayout {
     /**
      * Controls left axis visibility
      * @param showLeftAxis if true, the left axis and labels will be displayed
-     * @see #showAxis(boolean, boolean, boolean, boolean)
+     * @see #showAxes(boolean, boolean, boolean, boolean)
      */
     public void showLeftAxis(boolean showLeftAxis) {
         this.showLeftAxis = showLeftAxis;
@@ -398,7 +398,7 @@ public class Chart extends RelativeLayout {
     /**
      * Controls right axis visibility
      * @param showRightAxis if true, the right axis and labels will be displayed
-     * @see #showAxis(boolean, boolean, boolean, boolean)
+     * @see #showAxes(boolean, boolean, boolean, boolean)
      */
     public void showRightAxis(boolean showRightAxis) {
         this.showRightAxis = showRightAxis;
@@ -407,7 +407,7 @@ public class Chart extends RelativeLayout {
     /**
      * Controls top axis visibility
      * @param showTopAxis if true, the top axis and labels will be displayed
-     * @see #showAxis(boolean, boolean, boolean, boolean)
+     * @see #showAxes(boolean, boolean, boolean, boolean)
      */
     public void showTopAxis(boolean showTopAxis) {
         this.showTopAxis = showTopAxis;
@@ -416,7 +416,7 @@ public class Chart extends RelativeLayout {
     /**
      * Controls bottom axis visibility
      * @param showBottomAxis if true, the bottom axis and labels will be displayed
-     * @see #showAxis(boolean, boolean, boolean, boolean)
+     * @see #showAxes(boolean, boolean, boolean, boolean)
      */
     public void showBottomAxis(boolean showBottomAxis) {
         this.showBottomAxis = showBottomAxis;
@@ -456,6 +456,10 @@ public class Chart extends RelativeLayout {
 
     public void showGrid(boolean showGrid) {
         this.showGrid = showGrid;
+    }
+
+    public boolean isShowingGrid() {
+        return showGrid;
     }
 
     public int getHorizontalGridLines() {

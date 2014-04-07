@@ -9,6 +9,7 @@
 
     <path id="chartlib.classpath">
         <pathelement location="${android.sdk.home}/platforms/android-10/android.jar"/>
+        <pathelement location="${src}/libs/commons-math3-3.2.jar"/>
     </path>
 
     <target name="init">
@@ -19,6 +20,7 @@
     <target name="clean" description="clean up">
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
+        <delete dir="${doc}"/>
     </target>
 
     <target name="compile" depends="init" description="compile source">
