@@ -52,7 +52,9 @@ public class PieSerie extends Serie {
         sort();
         startAngle=0;
 
-        diameter=(area.height()>=area.width())?area.width():area.height();
+        if(diameter==0) {
+            diameter = (area.height() >= area.width()) ? area.width() : area.height();
+        }
 
         float x1=(area.width()-diameter)/2;
         float y1=(area.height()-diameter)/2;
@@ -90,6 +92,14 @@ public class PieSerie extends Serie {
 
         canvas.drawArc(bounds, startAngle, angle, true, paint);
         startAngle+=angle;
+    }
+
+    public int getDiameter() {
+        return diameter;
+    }
+
+    public void setDiameter(int diameter) {
+        this.diameter = diameter;
     }
 
     @Override
