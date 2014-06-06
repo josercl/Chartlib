@@ -9,10 +9,10 @@ import android.graphics.Rect;
  */
 public class BarSerie extends Serie {
 
-    private float barGap=.5f;
-    private float barWidth,scaledGap;
+    protected float barGap=.5f;
+    protected float barWidth,scaledGap;
 
-    private double y0;
+    protected double y0;
 
     @Override
     public void addPoint(Point p) {
